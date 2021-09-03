@@ -62,33 +62,51 @@ public class Function_Look {
 	
 	// 몇번째 줄인지 계산
 	public int countLn() {
-		AttributedString text = new AttributedString(gui.textArea.getText());
-        FontRenderContext frc = gui.textArea.getFontMetrics(gui.textArea.getFont()).getFontRenderContext();
-        AttributedCharacterIterator charIt = text.getIterator();
-        LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(charIt, frc);
-        float formatWidth = (float) gui.textArea.getSize().width;
-        lineMeasurer.setPosition(charIt.getBeginIndex());
-
-        int noLines = 0;
-        while (lineMeasurer.getPosition() < charIt.getEndIndex()) {
-            lineMeasurer.nextLayout(formatWidth);
-            noLines++;
-        }
-
-        int lineEnter = gui.textArea.getLineCount();
-        int countLine = noLines + lineEnter;
-
-        return countLine-1;
-//		int count = 1;
+		
+		
+		
+//		int linenum = 1;
 //		try {
-//			int caretpos = gui.textArea.getCaretPosition();
-//            count = gui.textArea.getLineOfOffset(caretpos);
-//            count++;
-//		} catch(Exception e) {
+//			int pos = gui.textArea.getCaretPosition();
+//			linenum = gui.textArea.getLineOfOffset(pos);
+//			return linenum;
+//		}catch(Exception e) {
 //			
 //		}
+//		return linenum;
 		
-	
+		
+		
+
+		int currentLine = 1;
+		try {
+			int pos = gui.textArea.getCaretPosition();
+			String text = gui.textArea.getText();
+			char[] chars = new char[text.length()];
+			chars = text.toCharArray();
+			int count = 0;
+			int start = 0, end = 0;
+			for(int i = 0; i < chars.length; i++) {
+				if(chars[i] == '\n') {
+					count++;
+					start = end;
+					end = i;
+					if(pos >= start && pos < end) {
+						currentLine = count;
+						break;
+					}
+				}
+			}
+			if(currentLine == 1 && pos > end) {
+				currentLine = count;
+			}
+			
+			return currentLine;
+		}catch(NullPointerException e) {
+			e.getStackTrace();
+		}
+		return currentLine;
+		
 	}
 	
 	// 몇번째 글자인지 계산(공백 포함)

@@ -1,5 +1,6 @@
 package SimpleNotepad;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Panel;
@@ -12,6 +13,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
@@ -66,6 +70,14 @@ public class GUI implements ActionListener {
 	// HELP MENU
 	JMenuItem iHelp;
 	
+	// CREATE FIND WINDOW
+	JFrame search ;
+	JPanel searchPanel, dPanel;
+	JLabel searchString;
+	JTextField string ;
+	JButton searchNext, cancel;
+	JCheckBox division, arround, up, down ;
+		
 	// Function_File 객체 생성 -> 불러서 쓰기 위해 -> this로 연결
 	Function_File file = new Function_File(this);
 	Function_Format format = new Function_Format(this);
@@ -360,6 +372,67 @@ public class GUI implements ActionListener {
 		menuHelp.add(iHelp);
 	}
 	
+	public void createFind() {
+		search = new JFrame("찾기");
+		search.setSize(500, 200);
+		search.setVisible(true);
+		search.setResizable(false);
+	    Dimension frameSize = search.getSize();
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    search.setLocation(((screenSize.width - frameSize.width) / 2), ((screenSize.height - frameSize.height) / 2));
+	    
+		searchPanel = new JPanel();
+		searchPanel.setLayout(null);
+		
+		searchString = new JLabel("찾을 내용(N):");
+		searchString.setBounds(10, 10, 70, 30);
+		string = new JTextField();
+		string.setBounds(80, 10, 300, 30);
+		
+		searchNext = new JButton("다음 찾기(F)");
+		searchNext.setBounds(380, 10, 100, 30);
+		searchNext.addActionListener(this);
+		searchNext.setActionCommand("다음 찾기(F)");
+		
+		cancel = new JButton("취소");
+		cancel.setBounds(380, 40, 100, 30);
+		cancel.addActionListener(this);
+		cancel.setActionCommand("취소");
+		
+		division = new JCheckBox("대/소문자 구분(C)");
+		division.setBounds(10, 100, 130, 30);
+		
+		arround = new JCheckBox("주위에 배치(R)");
+		arround.setBounds(10, 130, 110, 30);
+		
+		dPanel = new JPanel();
+		dPanel.setLayout(null);
+		dPanel.setBounds(220, 40, 160, 60);
+		dPanel.setBorder(new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "방향"));
+		
+		up = new JCheckBox("위로(U)");
+		up.setBounds(5, 20, 80, 35);
+		
+		down = new JCheckBox("아래로(D)");
+		down.setBounds(75, 20, 100, 35);
+		
+		search.add(searchPanel);
+		searchPanel.add(searchString);
+		searchPanel.add(string);
+		searchPanel.add(searchNext);
+		searchPanel.add(cancel);
+		searchPanel.add(division);
+		searchPanel.add(arround);
+		
+		searchPanel.add(dPanel);
+		dPanel.add(up);
+		dPanel.add(down);
+		
+		
+		
+		search.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
+		
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -380,8 +453,10 @@ public class GUI implements ActionListener {
 		case "Copy" : edit.copy(); break;
 		case "Paste" : edit.paste(); break;
 		case "Delete" : edit.delete(); break;
-		case "Find" : edit.find();; break;
-		case "Next Find" : edit.nextfind(); break;
+		case "Find" : edit.createFind(); break;
+		case "다음 찾기(F)" : edit.nextfind(); break;
+		case "취소" : edit.cancel(); break;
+		case "Next Find" : edit.createFind(); break;
 		case "Move" : edit.move(); break;
 		case "All Select" : edit.allselect(); break;
 		case "Calendar" : edit.calendar(); break;
