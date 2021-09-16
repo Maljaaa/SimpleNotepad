@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -87,23 +88,48 @@ public class Function_Edit {
 	}
 	
 	public void createFind() {		
+		
 		gui.createFind();
 	}
 	
 	public void nextfind() {
-		String word = gui.string.getSelectedText();
-		int position = gui.textArea.getCaretPosition();
-		while(word != null) {
+		
+		// index부여하기 위한 num
+		int num = 0;
+		// 위로 일때
+		if(gui.up.isSelected()) {
 			
 		}
-		int start = gui.textArea.getSelectionStart();
-		int end = gui.textArea.getSelectionEnd();
-		gui.textArea.requestFocus();
-		gui.textArea.select(start, end);
+		// 아래로 일때
+		else if(gui.down.isSelected()) {
+			String word = gui.textArea.getSelectedText();
+			int word_index = gui.textArea.getText().indexOf(word, num);
+			if(gui.division.isSelected() == false) {
+				word = gui.textArea.getSelectedText().toLowerCase();
+				word_index = gui.textArea.getText().toLowerCase().indexOf(word, num);
+			}
+			String str = gui.textArea.getText().replaceAll("\\r", "");
+			gui.textArea.setText(str);
+			gui.textArea.requestFocus();
+			for(int i = 0; i < str.length(); i++) {
+				if(word_index == i) {
+					gui.textArea.select(word_index, word_index + word.length());
+					num = word_index + word.length();
+				}
+			}
+			JOptionPane op = new JOptionPane();
+			
+			if(num != word_index + word.length()) {
+				JOptionPane.showMessageDialog(null, "\"" + word + "\"" + " 를 찾을 수 없습니다.");
+			}
+			
+			
+		}
 	}
 	
 	public void cancel() {
-		gui.search.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		gui.search.setVisible(false);
 
 	}
 	

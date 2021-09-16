@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -76,7 +78,8 @@ public class GUI implements ActionListener {
 	JLabel searchString;
 	JTextField string ;
 	JButton searchNext, cancel;
-	JCheckBox division, arround, up, down ;
+	JCheckBox division, arround;
+	JRadioButton up, down;
 		
 	// Function_File 객체 생성 -> 불러서 쓰기 위해 -> this로 연결
 	Function_File file = new Function_File(this);
@@ -380,6 +383,7 @@ public class GUI implements ActionListener {
 	    Dimension frameSize = search.getSize();
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    search.setLocation(((screenSize.width - frameSize.width) / 2), ((screenSize.height - frameSize.height) / 2));
+	    search.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    
 		searchPanel = new JPanel();
 		searchPanel.setLayout(null);
@@ -401,6 +405,7 @@ public class GUI implements ActionListener {
 		
 		division = new JCheckBox("대/소문자 구분(C)");
 		division.setBounds(10, 100, 130, 30);
+		division.setSelected(true);
 		
 		arround = new JCheckBox("주위에 배치(R)");
 		arround.setBounds(10, 130, 110, 30);
@@ -410,11 +415,19 @@ public class GUI implements ActionListener {
 		dPanel.setBounds(220, 40, 160, 60);
 		dPanel.setBorder(new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "방향"));
 		
-		up = new JCheckBox("위로(U)");
-		up.setBounds(5, 20, 80, 35);
+		// RadioButton으로 둘중 하나만 선택되게 설정. default값은 아래로 설정
+		ButtonGroup group = new ButtonGroup();
 		
-		down = new JCheckBox("아래로(D)");
+		up = new JRadioButton("위로(U)");
+		up.setBounds(5, 20, 80, 35);
+		up.setSelected(false);
+		
+		down = new JRadioButton("아래로(D)");
 		down.setBounds(75, 20, 100, 35);
+		down.setSelected(true);
+		
+		group.add(up);
+		group.add(down);
 		
 		search.add(searchPanel);
 		searchPanel.add(searchString);
