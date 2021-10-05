@@ -1,12 +1,16 @@
 package SimpleNotepad;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Panel;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -60,7 +64,7 @@ public class GUI implements ActionListener {
 	JMenuItem iNew, iNWindow, iOpen, iSave, iSaveAs, iPage, iPrint, iExit;
 	
 	// EDIT MENU
-	JMenuItem iUndo, iRedo, iCut, iCopy, iPaste, iDelete, iFind, iNFind, iChange, iMove, iASelect, iCalendar;
+	JMenuItem iUndo, iRedo, iCut, iCopy, iPaste, iDelete, iGFind, iFind, iNFind, iBFind, iChange, iMove, iASelect, iCalendar;
 	
 	// FORMAT MENU
 	JMenuItem iWrap, iFontArial, iFontCSMS, iFontTNR, iFontSize8, iFontSize12, iFontSize16, iFontSize20, iFontSize24, iFontSize26;
@@ -149,7 +153,7 @@ public class GUI implements ActionListener {
 					public void undoableEditHappened(UndoableEditEvent e) {
 						um.addEdit(e.getEdit());
 					}
-				});
+		});
 		
 		// 수평, 수직 상태에서 필요하면 스크롤 바 생성
 		scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -216,6 +220,7 @@ public class GUI implements ActionListener {
 		iPage.addActionListener(this);
 		iPage.setActionCommand("Page");
 		menuFile.add(iPage);
+		iPage.setEnabled(false);
 		
 		iPrint = new JMenuItem("Print");
 		iPrint.addActionListener(this);
@@ -266,25 +271,41 @@ public class GUI implements ActionListener {
 		
 		menuEdit.addSeparator();
 		
+		iGFind = new JMenuItem("Google Find");
+		iGFind.addActionListener(this);
+		iGFind.setActionCommand("Google Find");
+		menuEdit.add(iGFind);
+		iGFind.setEnabled(true);	
+		
 		iFind = new JMenuItem("Find");
 		iFind.addActionListener(this);
 		iFind.setActionCommand("Find");
 		menuEdit.add(iFind);
+		iFind.setEnabled(false);
 		
 		iNFind = new JMenuItem("Next Find");
 		iNFind.addActionListener(this);
 		iNFind.setActionCommand("Next Find");
 		menuEdit.add(iNFind);
+		iNFind.setEnabled(false); 
+		
+		iBFind = new JMenuItem("Before Find");
+		iBFind.addActionListener(this);
+		iBFind.setActionCommand("Before Find");
+		menuEdit.add(iBFind);
+		iBFind.setEnabled(false);
 		
 		iChange = new JMenuItem("Change");
 		iChange.addActionListener(this);
 		iChange.setActionCommand("Change");
 		menuEdit.add(iChange);
+		iChange.setEnabled(false);
 		
 		iMove = new JMenuItem("Move");
 		iMove.addActionListener(this);
 		iMove.setActionCommand("Move");
 		menuEdit.add(iMove);
+		iMove.setEnabled(false);
 		
 		menuEdit.addSeparator();
 		
@@ -365,6 +386,7 @@ public class GUI implements ActionListener {
 		iState.addActionListener(this);
 		iState.setActionCommand("Status bar");
 		menuLook.add(iState);
+		iState.setEnabled(false);
 	}
 	
 	public void createHelpMenu() {
@@ -466,6 +488,7 @@ public class GUI implements ActionListener {
 		case "Copy" : edit.copy(); break;
 		case "Paste" : edit.paste(); break;
 		case "Delete" : edit.delete(); break;
+		case "Google Find" : edit.googleFind(); break;
 		case "Find" : edit.createFind(); break;
 		case "다음 찾기(F)" : edit.nextfind(); break;
 		case "취소" : edit.cancel(); break;

@@ -3,6 +3,7 @@ package SimpleNotepad;
 import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.net.URI;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
 
 
 public class Function_Edit {
@@ -87,43 +90,50 @@ public class Function_Edit {
 		gui.textArea.replaceRange("", start, end);
 	}
 	
+	public void googleFind() {
+		
+		String str = gui.textArea.getSelectedText();
+		
+		String link = "https://www.google.com/search?q=" + str + "";
+		
+		if(str != null) {
+			try {
+				Desktop.getDesktop().browse(new URI(link));
+			}catch(Exception e) {
+				
+			}
+		}
+		else
+			JOptionPane.showMessageDialog(null,  "찾을 내용이 없습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+	}
+	
 	public void createFind() {		
 		
-		gui.createFind();
+		gui.createFind();		
 	}
 	
 	public void nextfind() {
 		
-		// index부여하기 위한 num
 		int num = 0;
-		// 위로 일때
-		if(gui.up.isSelected()) {
-			
+		
+		String search_input = gui.string.getText();
+		int search_index = gui.textArea.getText().indexOf(search_input, num);
+		if(gui.division.isSelected() == false) {
+			System.out.println("대소구분안함");
+			search_input = gui.string.getText().toLowerCase();
+			search_index = gui.textArea.getText().toLowerCase().indexOf(search_input, num);
 		}
-		// 아래로 일때
-		else if(gui.down.isSelected()) {
-			String word = gui.textArea.getSelectedText();
-			int word_index = gui.textArea.getText().indexOf(word, num);
-			if(gui.division.isSelected() == false) {
-				word = gui.textArea.getSelectedText().toLowerCase();
-				word_index = gui.textArea.getText().toLowerCase().indexOf(word, num);
+		String str = gui.textArea.getText().replaceAll("\\r", "");
+		gui.textArea.setText(str);
+		gui.textArea.requestFocus();
+		for(int i = 0; i < str.length(); i++) {
+			if(search_index == i) {
+				gui.textArea.select(search_index, search_index + search_input.length());
+				continue;
 			}
-			String str = gui.textArea.getText().replaceAll("\\r", "");
-			gui.textArea.setText(str);
-			gui.textArea.requestFocus();
-			for(int i = 0; i < str.length(); i++) {
-				if(word_index == i) {
-					gui.textArea.select(word_index, word_index + word.length());
-					num = word_index + word.length();
-				}
-			}
-			JOptionPane op = new JOptionPane();
-			
-			if(num != word_index + word.length()) {
-				JOptionPane.showMessageDialog(null, "\"" + word + "\"" + " 를 찾을 수 없습니다.");
-			}
-			
-			
+		}
+		if(num != search_index + search_input.length()) {
+			JOptionPane.showMessageDialog(null,  "모두 다 찾았습니다.", "종료", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
