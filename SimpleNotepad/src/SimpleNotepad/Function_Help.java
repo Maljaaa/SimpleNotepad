@@ -1,8 +1,9 @@
 package SimpleNotepad;
 
 import java.awt.Desktop;
-
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class Function_Help {
 	
@@ -18,8 +19,10 @@ public class Function_Help {
 		
 		try { 
 			Desktop.getDesktop().browse(new URI(link)); 
-		} catch (Exception e) { 
-		
+		}catch(IOException e) {
+			e.printStackTrace();
+		}catch(URISyntaxException e) {
+			e.printStackTrace();
 		}
 	}
 }

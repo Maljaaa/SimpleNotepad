@@ -482,6 +482,7 @@ public class GUI implements ActionListener {
 		case "Page" : file.page(); break;
 		case "Print" : file.print(); break;
 		case "Exit" : file.exit(); break;
+		
 		case "Undo" : edit.undo(); break;
 		case "Redo" : edit.redo(); break;
 		case "Cut" : edit.cut(); break;
@@ -496,6 +497,7 @@ public class GUI implements ActionListener {
 		case "Move" : edit.move(); break;
 		case "All Select" : edit.allselect(); break;
 		case "Calendar" : edit.calendar(); break;
+		
 		case "Word Wrap" : format.wordWrap(); break;
 		case "Arial" : format.setFont(command); break;
 		case "Comic Sans MS" : format.setFont(command); break;
@@ -506,7 +508,9 @@ public class GUI implements ActionListener {
 		case "size20" : format.createFont(20); break;
 		case "size24" : format.createFont(24); break;
 		case "size26" : format.createFont(26); break;
-		case "Status bar" : look.createStatusBar(); break;
+		
+		case "Status bar" : look.StatusBarMenu(); break;
+		
 		case "Help" : help.help(); break;
 		}
 	}

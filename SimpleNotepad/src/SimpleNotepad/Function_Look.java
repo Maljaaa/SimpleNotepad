@@ -3,6 +3,9 @@ package SimpleNotepad;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.text.AttributedCharacterIterator;
@@ -20,19 +23,20 @@ public class Function_Look {
 	GUI gui;
 	String fileName;
 	String fileAddress;
+	Point x, y;
 	
 	JPanel statusPanel = new JPanel();
-	JLabel statusLabel = new JLabel("Ln " + countLn() + ", " + "Col " + countCol());
+	JLabel statusLabel = new JLabel("Ln " + y + ", " + "Col " + x);
 	public Function_Look(GUI gui) {
 		
 		this.gui = gui;
 	}
 	
-	public void createStatusBar() {
+	public void StatusBarMenu() {
 		// On하려면
 		if(gui.statusbarOn == false) { 
 			gui.statusbarOn = true; // On으로 바꿈
-			statusbar();
+			CreateStatusbar();
 			gui.iState.setText("Status Bar : On");
 		}
 				
@@ -45,7 +49,7 @@ public class Function_Look {
 		}
 	}
 	// 상태 표시줄 생성
-	public void statusbar() {
+	public void CreateStatusbar() {
 		
 		statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));	// 패널을 아래쪽에 생성
 		gui.window.add(statusPanel, BorderLayout.SOUTH);	// 프레임에 패널 추가
@@ -61,59 +65,15 @@ public class Function_Look {
 	}
 	
 	// 몇번째 줄인지 계산
-	public int countLn() {
-		
-		
-		
-//		int linenum = 1;
-//		try {
-//			int pos = gui.textArea.getCaretPosition();
-//			linenum = gui.textArea.getLineOfOffset(pos);
-//			return linenum;
-//		}catch(Exception e) {
-//			
-//		}
-//		return linenum;
-		
-		
-		
-
-		int currentLine = 1;
-		try {
-			int pos = gui.textArea.getCaretPosition();
-			String text = gui.textArea.getText();
-			char[] chars = new char[text.length()];
-			chars = text.toCharArray();
-			int count = 0;
-			int start = 0, end = 0;
-			for(int i = 0; i < chars.length; i++) {
-				if(chars[i] == '\n') {
-					count++;
-					start = end;
-					end = i;
-					if(pos >= start && pos < end) {
-						currentLine = count;
-						break;
-					}
-				}
-			}
-			if(currentLine == 1 && pos > end) {
-				currentLine = count;
-			}
-			
-			return currentLine;
-		}catch(NullPointerException e) {
-			e.getStackTrace();
-		}
-		return currentLine;
-		
-	}
-	
-	// 몇번째 글자인지 계산(공백 포함)
-	public int countCol() {
-		
-		int count = 0;
-		
-		return count;
+	public void countLn() {
+		 PointerInfo pt = MouseInfo.getPointerInfo();
+         while(true) {
+                pt = MouseInfo.getPointerInfo();
+                x = pt.getLocation();
+                y = pt.getLocation();
+         }
 	}
 }
+	
+
+

@@ -18,9 +18,11 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -94,13 +96,15 @@ public class Function_Edit {
 		
 		String str = gui.textArea.getSelectedText();
 		
-		String link = "https://www.google.com/search?q=" + str + "";
+		String link = "https://www.google.com/search?q=" + str;
 		
 		if(str != null) {
 			try {
 				Desktop.getDesktop().browse(new URI(link));
-			}catch(Exception e) {
-				
+			}catch(IOException e) {
+				e.printStackTrace();
+			}catch(URISyntaxException e) {
+				e.printStackTrace();
 			}
 		}
 		else
